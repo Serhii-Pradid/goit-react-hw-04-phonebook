@@ -1,61 +1,71 @@
-import React, {Component} from "react";
+import { useState } from "react";
 import shortid from "shortid";
 import css from './Form.module.css'
 
-class Form extends Component {
-    
-    state = {
-    name: '',
-    number: ''
-    }
+const Form = ({ onSubmit }) => {
 
-handleChange = event => {
-  const {name, value} = event.currentTarget
-  this.setState({[name]: value})     // == ({[event.currentTarget.name]: event.currentTarget.value})
-};
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-handleSubmit = event => {
+  const handleChange = (event) => {
+  const {name, value} = event.target;
+
+  switch (name) {
+    case 'name':
+      setName(value);
+      break;
+
+      case 'number':
+      setNumber(value);
+      break;
+  
+    default:
+      break;
+  }
+}
+
+const handleSubmit = event => {
   event.preventDefault();
-  console.log(this.state)
-  this.props.onSubmit(this.state);
-  this.reset();
+  console.log(name)
+
+  onSubmit(name, number);
+  reset();
  };
 
- reset = () => {
-    this.setState({name: '', number: ''})
+ const reset = () => {
+    setName('')
+    setNumber('')
  }
 
- nameInput = shortid.generate();
+ const nameInput = shortid.generate();
 
-    render() {
-
-        return (
-            <form onSubmit={this.handleSubmit}>
+   return (
+            <form onSubmit={handleSubmit}>
 <div className={css.fieldForm}>
       <label htmlFor={this.nameInput}> Name
    <input
   type="text"
   placeholder="Name Surname"
   name="name"
-  value={this.state.name}
+  value={name}
   pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
   title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
   required
-  onChange={this.handleChange}
-  id={this.nameInput}/>
+  onChange={handleChange}
+  id={nameInput}/>
     </label>
 
-     <label htmlFor={this.nameInput}> Number
+     <label htmlFor={nameInput}> Number
 
    <input
   type="tel"
   placeholder="xxx-xx-xx"
   name="number"
-  value={this.state.number}
+  value={number}
   pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
   title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
   required
-  onChange={this.handleChange}/>
+  onChange={handleChange}/>
       </label>
 </div>
 
@@ -64,7 +74,7 @@ handleSubmit = event => {
 </form>
          );
   }  
-}
+
 
 
 export default Form;
