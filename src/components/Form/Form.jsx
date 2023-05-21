@@ -26,7 +26,7 @@ const Form = ({ onSubmit }) => {
 
 const handleSubmit = event => {
   event.preventDefault();
-  console.log(name)
+  console.log(name, number)
 
   onSubmit(name, number);
   reset();
@@ -42,7 +42,7 @@ const handleSubmit = event => {
    return (
             <form onSubmit={handleSubmit}>
 <div className={css.fieldForm}>
-      <label htmlFor={this.nameInput}> Name
+      <label htmlFor={nameInput}> Name
    <input
   type="text"
   placeholder="Name Surname"
